@@ -1,0 +1,180 @@
+@startuml
+class bookmyshow.service.impl.BookingServiceImpl {
+- MovieBookingRepository movieBookingRepository
++ Booking bookSeats(String,String,List<String>)
++ void cancelBooking(String)
++ List<Seat> getAvailableSeats(String)
++ void addShow(Show)
+}
+
+
+class bookmyshow.entity.Screen {
+- String screenId
+- String screenName
+- List<Seat> seats
++ <<Create>> Screen(String,String)
++ void addSeat(Seat)
++ String getScreenId()
++ String getScreenName()
++ List<Seat> getSeat()
++ String toString()
+}
+
+
+class bookmyshow.exception.DuplicateShowException {
++ <<Create>> DuplicateShowException(String)
+}
+
+class bookmyshow.exception.SeatUnavailableException {
++ <<Create>> SeatUnavailableException(String)
+}
+
+enum bookmyshow.entity.SeatType {
++  PREMIUM
++  REGULAR
++  RECLINER
+}
+
+interface bookmyshow.service.ValidationService {
+~ boolean validateShow(Show)
+}
+
+class bookmyshow.entity.Theatre {
+- Screen screen
+- String theaterId
+- String theaterType
++ <<Create>> Theatre(String,String)
++ Screen getScreen()
++ void setScreen(Screen)
++ String getTheaterId()
++ void setTheaterId(String)
++ String getTheaterType()
++ void setTheaterType(String)
++ String toString()
+}
+
+
+class bookmyshow.entity.Movie {
+- String movieId
+- String movieName
++ <<Create>> Movie(String,String)
++ String getMovieId()
++ void setMovieId(String)
++ String getMovieName()
++ void setMovieName(String)
++ String toString()
+}
+
+
+class bookmyshow.exception.InvalidShowException {
++ <<Create>> InvalidShowException(String)
+}
+
+class bookmyshow.MovieBookingApplication {
++ {static} void main(String[])
+}
+
+class bookmyshow.exception.BookingNotFoundException {
++ <<Create>> BookingNotFoundException(String)
+}
+
+class bookmyshow.entity.Booking {
+- String bookingId
+- LocalDateTime localDateTime
+- BookingState bookingState
+- String userId
+- Show show
+- List<Seat> bookedSeat
++ <<Create>> Booking(String,LocalDateTime,BookingState,String,Show,List<Seat>)
++ <<Create>> Booking(LocalDateTime,BookingState,String)
++ <<Create>> Booking(String,LocalDateTime,BookingState,Show,List<Seat>)
++ String toString()
++ String getUserId()
++ void setUserId(String)
++ String getBookingId()
++ void setBookingId(String)
++ LocalDateTime getLocalDateTime()
++ void setLocalDateTime(LocalDateTime)
++ BookingState getBookingState()
++ void setBookingState(BookingState)
++ Show getShow()
++ void setShow(Show)
++ List<Seat> getBookedSeat()
++ void setBookedSeat(List<Seat>)
+}
+
+
+class bookmyshow.service.impl.ValidationServiceImpl {
++ boolean validateShow(Show)
+}
+
+class bookmyshow.repository.MovieBookingRepository {
+- ConcurrentHashMap<String,Show> showMap
+- ConcurrentHashMap<String,Show> timeMap
+- ConcurrentHashMap<String,Booking> bookingMap
+- ValidationService validationService
+- AtomicInteger counter
++ void addShow(Show)
++ List<Seat> getAvailableSeat(String)
++ void cancelBooking(String)
++ Booking bookSeats(String,String,List<String>)
+}
+
+
+enum bookmyshow.entity.BookingState {
++  COMPLETED
++  FAILED
+}
+
+class bookmyshow.entity.Show {
+- String showId
+- Movie movie
+- Screen screen
+- String time
+- List<Seat> seats
++ <<Create>> Show(String,Movie,Screen,String)
++ List<Seat> getAvailableSeats()
++ List<Seat> getSeats()
++ void setSeats(List<Seat>)
++ String getShowId()
++ void setShowId(String)
++ Movie getMovie()
++ void setMovie(Movie)
++ Screen getScreen()
++ void setScreen(Screen)
++ String getTime()
++ void setTime(String)
++ String toString()
+}
+
+
+class bookmyshow.entity.Seat {
+- String seat
+- boolean isAvailable
+- SeatType type
++ <<Create>> Seat(String)
++ String getSeat()
++ boolean isAvailable()
++ void setAvailable(boolean)
++ String toString()
++ boolean equals(Object)
++ int hashCode()
+}
+
+
+interface bookmyshow.service.BookingService {
+~ Booking bookSeats(String,String,List<String>)
+~ void cancelBooking(String)
+~ List<Seat> getAvailableSeats(String)
+~ void addShow(Show)
+}
+
+
+
+bookmyshow.service.BookingService <|.. bookmyshow.service.impl.BookingServiceImpl
+bookmyshow.exception.RuntimeException <|-- bookmyshow.exception.DuplicateShowException
+bookmyshow.exception.RuntimeException <|-- bookmyshow.exception.SeatUnavailableException
+bookmyshow.exception.RuntimeException <|-- bookmyshow.exception.InvalidShowException
+bookmyshow.exception.RuntimeException <|-- bookmyshow.exception.BookingNotFoundException
+bookmyshow.service.ValidationService <|.. bookmyshow.service.impl.ValidationServiceImpl
+@enduml

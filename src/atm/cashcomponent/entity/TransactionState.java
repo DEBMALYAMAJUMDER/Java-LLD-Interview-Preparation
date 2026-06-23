@@ -1,0 +1,18 @@
+package atm.cashcomponent.entity;
+
+public enum TransactionState {
+    INITIATE,
+    AUTHENTICATE,
+    AUTHENTICATION_FAILED,
+    BALANCE_FETCH,
+    INSUFFICIENT_BALANCE,
+    INVALID_AMOUNT,
+    AMOUNT_VALIDATED,
+    UNABLE_TO_FIND_ACCOUNT,
+    DEPOSIT,
+    WITHDRAWAL,
+    SUCCESSFUL,
+    EJECTED,
+    NOTES_UNAVAILABLE,
+    FAILED;
+}
